@@ -1,6 +1,10 @@
+import { Text } from "pixi.js";
 import { BaseScene } from "../../core/BaseScene";
 import { SceneManager } from "../../core/SceneManager";
-import { Text } from "pixi.js";
+import { Responsive } from "../../core/Responsive";
+import { AceOfShadowsScene } from "../AceOfShadows/AceOfShadowsScene";
+import { MagicWordsScene } from "../MagicWords/MagicWordsScene";
+import { PhoenixFlameScene } from "../PhoenixFlame/PhoenixFlameScene";
 
 export const SCENES = {
 	ACE_OF_SHADOWS: 'Ace of Shadows',
@@ -20,20 +24,20 @@ export class MainMenuScene extends BaseScene {
 		});
 
 		title.anchor.set(0.5);
-		title.x = window.innerWidth / 2;
+		title.x = Responsive.designWidth / 2;
 		title.y = 100;
 		this.container.addChild(title);
 
 		this.createButton(SCENES.ACE_OF_SHADOWS, 200, () => {
-			console.log(SCENES.ACE_OF_SHADOWS);
+			SceneManager.changeScene(new AceOfShadowsScene());
 		});
 
 		this.createButton(SCENES.MAGIC_WORDS, 300, () => {
-			console.log(SCENES.MAGIC_WORDS);
+			SceneManager.changeScene(new MagicWordsScene());
 		});
 
 		this.createButton(SCENES.PHOENIX_FLAME, 400, () => {
-			console.log(SCENES.PHOENIX_FLAME);
+			SceneManager.changeScene(new PhoenixFlameScene());
 		});
 	}
 

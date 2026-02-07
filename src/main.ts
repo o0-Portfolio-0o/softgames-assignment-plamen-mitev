@@ -2,6 +2,7 @@ import { Application } from "pixi.js";
 import { SceneManager } from "./core/SceneManager";
 import { FPSStatus } from "./core/FPSStatus";
 import { MainMenuScene } from "./scenes/MainMenu/MainMenuScene";
+import { Responsive } from "./core/Responsive";
 
 async function start() {
 	const app = new Application();
@@ -10,6 +11,8 @@ async function start() {
 		background: '#333',
 		resizeTo: window,
 	});
+
+	Responsive.init(app);
 
 	document.body.appendChild(app.canvas);
 
