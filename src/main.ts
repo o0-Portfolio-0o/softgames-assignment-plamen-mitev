@@ -1,4 +1,7 @@
 import { Application } from "pixi.js";
+import { SceneManager } from "./core/SceneManager";
+import { FPSStatus } from "./core/FPSStatus";
+import { MainMenuScene } from "./scenes/MainMenu/MainMenuScene";
 
 async function start() {
 	const app = new Application();
@@ -9,7 +12,13 @@ async function start() {
 	});
 
 	document.body.appendChild(app.canvas);
-	console.log("hello, world!")
+
+	SceneManager.init(app);
+
+	const fpsStatus = new FPSStatus(app, 100, 100, 60);
+	app.stage.addChild(fpsStatus);
+
+	SceneManager.changeScene(new MainMenuScene());
 }
 
 start();
