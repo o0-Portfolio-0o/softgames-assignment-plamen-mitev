@@ -17,6 +17,7 @@ async function start() {
 	document.body.appendChild(app.canvas);
 
 	await Assets.load("/assets/card.png");
+	await Assets.load("/assets/flame.png");
 
 	SceneManager.init(app);
 

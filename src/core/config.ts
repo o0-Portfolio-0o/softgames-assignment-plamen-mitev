@@ -66,6 +66,11 @@ const baseConfig = {
 					}
 				}
 			}
+		},
+		phoenixFlame: {
+			maxParticles: 10,
+			anchor: 0.5,
+			blendMode: "add"
 		}
 	}
 }
