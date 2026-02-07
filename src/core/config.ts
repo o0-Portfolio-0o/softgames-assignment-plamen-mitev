@@ -30,6 +30,43 @@ const baseConfig = {
 				fontSize: 24,
 			}
 		}
+	},
+	games: {
+		aceOfShadows: {
+			totalCards: 144,
+			anchor: 0.5,
+			yOffset: 2,
+			flyDelayMs: 1000,
+			sourceStack: {
+				position: {
+					xOffset: 0.3,
+					yOffset: 2,
+				}
+			},
+			targetStack: {
+				position: {
+					xOffset: 0.7,
+					yOffset: 2,
+				},
+				animations: {
+					flightDuration: 2,
+					arcHeight: 40,
+					flying: {
+						ease: "power2.out"
+					},
+					scaling: {
+						scale: {
+							to: 1.05,
+							reset: 1,
+						},
+						ease: {
+							out: "sine.out",
+							in: "sine.in"
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
