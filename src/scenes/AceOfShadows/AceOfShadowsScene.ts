@@ -1,8 +1,19 @@
 import { BaseScene } from "../../core/BaseScene";
-
+import { createButton } from "../../utils";
+import { SceneManager } from "../../core/SceneManager";
+import { MainMenuScene } from "../MainMenu/MainMenuScene";
+import baseConfig from "../../core/config";
 export class AceOfShadowsScene extends BaseScene {
 	init(): void {
-		console.log("Ace of Shadows loaded");
+		const { style, label, position: { y } } = baseConfig.ui.backButton;
+
+		createButton(
+			label,
+			y,
+			this.container,
+			style,
+			() => SceneManager.changeScene(new MainMenuScene())
+		);
 	}
 
 	update(): void {}
