@@ -5,7 +5,7 @@ import { MainMenuScene } from "../MainMenu/MainMenuScene";
 import baseConfig from "../../core/config";
 export class PhoenixFlameScene extends BaseScene {
 	init(): void {
-		const { style, label, , position: { y } } = baseConfig.ui.backButton;
+		const { style, label, position: { y } } = baseConfig.ui.backButton;
 		createButton(
 			label,
 			y,

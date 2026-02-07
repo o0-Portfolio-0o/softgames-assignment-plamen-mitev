@@ -46,7 +46,7 @@ export class MainMenuScene extends BaseScene {
 		);
 
 		createButton(
-			SCENES.MAGIC_WORDS,
+			SCENES.PHOENIX_FLAME,
 			400,
 			this.container,
 			ui.backButton.style,
