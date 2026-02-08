@@ -7,6 +7,7 @@ import baseConfig from "../../core/config";
 import gsap from "gsap";
 import { Responsive } from "../../core/Responsive";
 import { hitEffect } from "../../utils";
+import { SoundManager } from "../../core/SoundManager";
 export class AceOfShadowsScene extends BaseScene {
 	private sourceStack!: Container;
 	private targetStack!: Container;
@@ -121,6 +122,8 @@ export class AceOfShadowsScene extends BaseScene {
 					this.targetStack,
 					baseConfig.games.aceOfShadows.targetStack.animations.deck.hit
 				);
+				const popIndex = Math.floor(Math.random() * 6);
+				SoundManager.play(`pop${popIndex}`, 0.1);
 			}
 		});
 

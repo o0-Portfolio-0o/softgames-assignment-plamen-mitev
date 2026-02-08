@@ -3,6 +3,7 @@ import { SceneManager } from "./core/SceneManager";
 import { FPSStatus } from "./core/FPSStatus";
 import { MainMenuScene } from "./scenes/MainMenu/MainMenuScene";
 import { Responsive } from "./core/Responsive";
+import { SoundManager } from "./core/SoundManager";
 
 async function start() {
 	const app = new Application();
@@ -19,6 +20,8 @@ async function start() {
 	await Assets.load("/assets/card.png");
 	await Assets.load("/assets/flame.png");
 
+	await loadSounds();
+
 	SceneManager.init(app);
 
 	const fpsStatus = new FPSStatus(app, 100, 100, 60);
@@ -30,6 +33,17 @@ async function start() {
 	});
 
 	SceneManager.changeScene(new MainMenuScene());
+}
+
+async function loadSounds() {
+	return Promise.all([
+		SoundManager.load("pop0", "/assets/sounds/pop0.wav", 0.5),
+		SoundManager.load("pop1", "/assets/sounds/pop1.wav", 0.5),
+		SoundManager.load("pop2", "/assets/sounds/pop2.wav", 0.5),
+		SoundManager.load("pop3", "/assets/sounds/pop3.wav", 0.5),
+		SoundManager.load("pop4", "/assets/sounds/pop4.wav", 0.5),
+		SoundManager.load("pop5", "/assets/sounds/pop5.wav", 0.5)
+	]);
 }
 
 start();
