@@ -1,14 +1,14 @@
 const baseConfig = {
 	ui: {
 		title: {
-			label: 'Softgames Assignment Plamen Mitev',
+			label: 'Softgames Assignment',
 			anchor: 0.5,
 			position: {
 				y: 100,
 			},
 			style: {
-				fill: "#ffffff",
-				fontSize: 32,
+				fill: 0xffffff,
+				fontSize: 26,
 			}
 		},
 		backButton: {

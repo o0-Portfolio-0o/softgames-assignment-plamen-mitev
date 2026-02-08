@@ -2,7 +2,6 @@ import { Application, Container, Texture } from "pixi.js";
 import { AvatarDef, DialogEntry } from "./DialogueLoader";
 import { createDialogBubble } from "./DialogBubble";
 import gsap from "gsap";
-import { Responsive } from "../../core/Responsive";
 import baseConfig from "../../core/config";
 import { SoundManager } from "../../core/SoundManager";
 
@@ -12,7 +11,7 @@ export async function playDialogue(
 	avatars: AvatarDef[],
 	avatarTextures: Map<string, Texture>,
 	emojiTextures: Map<string, Texture>,
-	designWidth: number,
+	windowInnerWidth: number,
 ) {
 
 	const container = new Container();
@@ -39,11 +38,11 @@ export async function playDialogue(
 				avatars,
 				avatarTextures,
 				emojiTextures,
-				designWidth,
+				windowInnerWidth,
 			);
 
-			bubble.x = side === "left" ? leftX : designWidth - bubble.width - leftX;
-			bubble.y = Responsive.designHeight - bubble.height - offset.y;
+			bubble.x = side === "left" ? leftX : windowInnerWidth- bubble.width - leftX;
+			bubble.y = window.innerHeight - bubble.height - offset.y;
 			bubble.alpha = 0;
 			container.addChild(bubble);
 

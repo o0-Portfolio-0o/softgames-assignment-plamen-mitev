@@ -5,22 +5,22 @@ import { SceneManager } from "../../core/SceneManager";
 import { MainMenuScene } from "../MainMenu/MainMenuScene";
 import baseConfig from "../../core/config";
 import gsap from "gsap";
-import { Responsive } from "../../core/Responsive";
 import { hitEffect } from "../../utils";
 import { SoundManager } from "../../core/SoundManager";
 export class AceOfShadowsScene extends BaseScene {
 	private sourceStack!: Container;
 	private targetStack!: Container;
 	private spawnAccumulatorMs = 0;
+	private backBtn!: Container;
 
 	init(): void {
 		const { style, label, position: { y } } = baseConfig.ui.backButton;
-
+		window.addEventListener('resize', this.onResize);
 		this.createStack();
 		this.createCards();
-
-		createButton(
+		this.backBtn = createButton(
 			label,
+			window.innerWidth - 100,
 			y,
 			this.container,
 			style,
@@ -42,6 +42,7 @@ export class AceOfShadowsScene extends BaseScene {
 	destroy(): void {
 		this.container.removeChildren();
 		gsap.globalTimeline.clear();
+		window.removeEventListener('resize', this.onResize);
 	}
 
 	private createStack() {
@@ -50,12 +51,11 @@ export class AceOfShadowsScene extends BaseScene {
 		this.sourceStack = new Container();
 		this.targetStack = new Container();
 
-		this.sourceStack.x = Responsive.designWidth * sourceStack.position.xOffset;
-		this.sourceStack.y = Responsive.designHeight / sourceStack.position.yOffset;
+		this.sourceStack.x = window.innerWidth * sourceStack.position.xOffset;
+		this.sourceStack.y = window.innerHeight - 100;
 
-		this.targetStack.x = Responsive.designWidth * targetStack.position.xOffset;
-		this.targetStack.y = Responsive.designHeight / targetStack.position.yOffset;
-
+		this.targetStack.x = window.innerWidth * targetStack.position.xOffset;
+		this.targetStack.y = window.innerHeight - 100;
 		this.container.addChild(this.sourceStack, this.targetStack);
 	}
 
@@ -182,5 +182,13 @@ export class AceOfShadowsScene extends BaseScene {
 				duration: 0.12,
 				ease: "elastic.out(1, 0.4)"
 			});
+	}
+
+	private onResize = () => {
+		this.sourceStack.x = this.sourceStack.width / 2;
+		this.targetStack.x = window.innerWidth - this.targetStack.width / 2;
+		this.sourceStack.y = window.innerHeight - 100;
+		this.targetStack.y = window.innerHeight - 100;
+		this.backBtn.x = window.innerWidth - 100;
 	}
 }

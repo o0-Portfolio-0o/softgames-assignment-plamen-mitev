@@ -1,5 +1,5 @@
 import { BaseScene } from "../../core/BaseScene";
-import { Texture } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { SceneManager } from "../../core/SceneManager";
 import { MainMenuScene } from "../MainMenu/MainMenuScene";
 import { createButton } from "../../utils";
@@ -8,16 +8,19 @@ import { PhoenixFlame } from "./PhoenixFlame";
 
 export class PhoenixFlameScene extends BaseScene {
     private flame!: PhoenixFlame;
+    private backBtn!: Container;
 
     init(): void {
         const flameTexture = Texture.from("/assets/flame.png");
+        window.addEventListener('resize', this.onResize);
         const { label, position: { y }, style } = baseConfig.ui.backButton;
 
-        this.flame = new PhoenixFlame(flameTexture, 400, 500);
+        this.flame = new PhoenixFlame(flameTexture, window.innerWidth / 2, window.innerHeight - 100);
         this.container.addChild(this.flame);
 
-        createButton(
+        this.backBtn = createButton(
             label,
+			window.innerWidth - 100,
             y,
             this.container,
             style,
@@ -34,5 +37,12 @@ export class PhoenixFlameScene extends BaseScene {
             this.flame.destroyFlame();
             this.flame.destroy({ children: true });
         }
+        window.removeEventListener('resize', this.onResize);
+    }
+
+    onResize = () => {
+        this.backBtn.x = window.innerWidth - 100;
+        this.flame.x = 0;
+        this.flame.y = 0;
     }
 }

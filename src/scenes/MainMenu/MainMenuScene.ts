@@ -1,7 +1,6 @@
 import { Container, Text } from "pixi.js";
 import { BaseScene } from "../../core/BaseScene";
 import { SceneManager } from "../../core/SceneManager";
-import { Responsive } from "../../core/Responsive";
 import { AceOfShadowsScene } from "../AceOfShadows/AceOfShadowsScene";
 import { MagicWordsScene } from "../MagicWords/MagicWordsScene";
 import { PhoenixFlameScene } from "../PhoenixFlame/PhoenixFlameScene";
@@ -15,38 +14,45 @@ export const SCENES = {
 };
 
 export class MainMenuScene extends BaseScene {
-
+	private title!: Text;
+	private btnAce!: Container;
+	private btnWords!: Container;
+	private btnPhoenix!: Container;
 	init(): void {
 		const { ui } = baseConfig;
 
-		const title = new Text({
+		window.addEventListener("resize", this.onResize);
+
+		this.title = new Text({
 			text: ui.title.label,
 			style: ui.title.style
 		});
 
-		title.anchor.set(ui.title.anchor);
-		title.x = Responsive.designWidth / 2;
-		title.y = ui.title.position.y;
-		this.container.addChild(title);
-
-		createButton(
+		this.title.x = window.innerWidth / 2 - this.title.width / 2;
+		this.title.y = ui.title.position.y;
+		this.container.addChild(this.title);
+		const buttonXPos = window.innerWidth / 2 - 100;
+		this.btnAce = createButton(
 			SCENES.ACE_OF_SHADOWS,
+			buttonXPos,
 			200,
 			this.container,
 			ui.backButton.style,
 			() => SceneManager.changeScene(new AceOfShadowsScene())
 		);
 
-		createButton(
+		this.btnWords = createButton(
 			SCENES.MAGIC_WORDS,
+			buttonXPos,
 			300,
 			this.container,
 			ui.backButton.style,
 			() => SceneManager.changeScene(new MagicWordsScene())
 		);
 
-		createButton(
+		this.btnPhoenix = createButton(
 			SCENES.PHOENIX_FLAME,
+			buttonXPos,
 			400,
 			this.container,
 			ui.backButton.style,
@@ -54,6 +60,16 @@ export class MainMenuScene extends BaseScene {
 		);
 	}
 
+	onResize = () => {
+			this.title.x = window.innerWidth / 2 - this.title.width / 2;
+			this.btnAce.x = window.innerWidth / 2 - this.btnAce.width / 2;
+			this.btnWords.x = window.innerWidth / 2 - this.btnWords.width / 2;
+			this.btnPhoenix.x = window.innerWidth / 2 - this.btnPhoenix.width / 2;
+		}
+
 	update(): void {}
-	destroy(): void {}
+
+	destroy(): void {
+		window.removeEventListener("resize", this.onResize);
+	}
 }

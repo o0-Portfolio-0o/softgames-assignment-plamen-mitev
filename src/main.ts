@@ -2,7 +2,6 @@ import { Application, Assets } from "pixi.js";
 import { SceneManager } from "./core/SceneManager";
 import { FPSStatus } from "./core/FPSStatus";
 import { MainMenuScene } from "./scenes/MainMenu/MainMenuScene";
-import { Responsive } from "./core/Responsive";
 import { SoundManager } from "./core/SoundManager";
 
 async function start() {
@@ -11,9 +10,9 @@ async function start() {
 	await app.init({
 		background: '#333',
 		resizeTo: window,
+		autoDensity: true,
+		resolution: window.devicePixelRatio,
 	});
-
-	Responsive.init(app);
 
 	document.body.appendChild(app.canvas);
 
@@ -24,7 +23,7 @@ async function start() {
 
 	SceneManager.init(app);
 
-	const fpsStatus = new FPSStatus(app, 100, 100, 60);
+	const fpsStatus = new FPSStatus(app, 10, 10, 60);
 
 	app.stage.addChild(fpsStatus);
 
