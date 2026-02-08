@@ -75,10 +75,8 @@ export class AceOfShadowsScene extends BaseScene {
 		if (this.sourceStack.children.length === 0) return;
 
 		const { yOffset } = baseConfig.games.aceOfShadows.targetStack.position;
-		const { flying, scaling } = baseConfig.games.aceOfShadows.targetStack.animations;
-		const {flightDuration , arcHeight } = baseConfig.games.aceOfShadows.animations;
 
-		const card = this.sourceStack.children[this.sourceStack.children.length -1] as Sprite;
+		const card = this.sourceStack.children[this.sourceStack.children.length - 1] as Sprite;
 
 		const globalStart = card.getGlobalPosition();
 		this.sourceStack.removeChild(card);
@@ -91,19 +89,34 @@ export class AceOfShadowsScene extends BaseScene {
 		card.y = localStart.y;
 
 		const endRot = (Math.random() * 0.1) - 0.05;
-
 		const endX = this.targetStack.x;
 		const endY = this.targetStack.y - this.targetStack.children.length * yOffset;
 
+		this.animateCardFlight(card, localStart, { endX, endY, endRot });
+	}
+
+	private animateCardFlight(
+		card: Sprite,
+		localStart: { x: number; y: number },
+		{ endX, endY, endRot }: { endX: number; endY: number; endRot: number }
+	) {
+		const { flying, scaling } = baseConfig.games.aceOfShadows.targetStack.animations;
+		const { flightDuration, arcHeight } = baseConfig.games.aceOfShadows.animations;
+
+		const stackHeight = this.targetStack.children.length;
+		const rotateDirection = stackHeight > 50 ? -1 : 1;
+
 		const tl = gsap.timeline({
-			duration:1,
 			onComplete: () => {
 				this.container.removeChild(card);
 				this.targetStack.addChild(card);
+
 				card.x = 0;
-				card.y = -this.targetStack.children.length * yOffset;
+				card.y = -this.targetStack.children.length * baseConfig.games.aceOfShadows.targetStack.position.yOffset;
+
 				const finalRot = card.rotation;
 				card.rotation = gsap.utils.interpolate(finalRot, endRot, 0.5);
+
 				hitEffect(
 					this.targetStack,
 					baseConfig.games.aceOfShadows.targetStack.animations.deck.hit
@@ -124,15 +137,11 @@ export class AceOfShadowsScene extends BaseScene {
 			}
 		}, 0);
 
-		const stackHeight = this.targetStack.children.length;
-		const rotateDirection = stackHeight > 50 ? -1 : 1;
-
 		tl.to(card, {
 			duration: flightDuration / 1.09,
-			rotation: card.rotation + rotateDirection *(Math.PI * 2),
+			rotation: card.rotation + rotateDirection * (Math.PI * 2),
 			ease: "power1.out"
 		}, 0);
-
 
 		tl.to(card.scale, {
 			duration: flightDuration / 2,
@@ -153,8 +162,8 @@ export class AceOfShadowsScene extends BaseScene {
 		const stack = this.sourceStack;
 		gsap.timeline()
 			.to(stack.scale, {
-				x:0.98,
-				y:1.02,
+				x: 0.98,
+				y: 1.02,
 				duration: 0.09,
 				ease: "power1.in"
 			})
