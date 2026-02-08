@@ -22,17 +22,6 @@ export function gsapTypewriter(container: Container, speed = 0.04) {
             alpha: 1,
             duration: speed,
             ease: "power1.out",
-            onStart: () => {
-                if ("scale" in item) {
-                    const baseX = item.scale.x;
-                    const baseY = item.scale.y;
-                    gsap.fromTo(
-                        item.scale,
-                        { x: baseX * 0.5, y: baseY * 0.5 },
-                        { x: baseX, y: baseY, duration: 0.2, ease: "back.out(2)", overwrite: true }
-                    );
-                }
-            }
         }, i * speed);
     });
     (tl as any).revealAll = () => {
@@ -42,10 +31,6 @@ export function gsapTypewriter(container: Container, speed = 0.04) {
 
         for (const item of items) {
             item.alpha = 1;
-
-            if ("scale" in item) {
-                item.scale.set(1);
-            }
         }
     };
     return tl;

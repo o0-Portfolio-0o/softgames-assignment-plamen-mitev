@@ -66,6 +66,6 @@ export function createDialogBubble(
 		bubble.addChild(bg);
 		bubble.alpha = 0;
 
-		const timeline = gsapTypewriter(richText, 0.04);
+		const timeline = gsapTypewriter(richText, 0.3);
 		return { bubble, timeline };
 }

@@ -4,6 +4,7 @@ import { createDialogBubble } from "./DialogBubble";
 import gsap from "gsap";
 import { Responsive } from "../../core/Responsive";
 import baseConfig from "../../core/config";
+import { SoundManager } from "../../core/SoundManager";
 
 export async function playDialogue(
 	app: Application,
@@ -46,8 +47,28 @@ export async function playDialogue(
 			bubble.alpha = 0;
 			container.addChild(bubble);
 
-			await gsap.to(bubble, {alpha: 1, duration: 0.3}).then(); //TODO
-
+			await gsap.to(bubble, {alpha: 1, duration: 0.3,
+            onStart: () => {
+                if ("scale" in bubble) {
+                    const baseX = bubble.scale.x;
+                    const baseY = bubble.scale.y;
+                    gsap.fromTo(
+                        bubble.scale,
+                        { x: baseX * 0.5, y: baseY * 0.5 },
+                        {
+													x: baseX,
+													y: baseY,
+													duration: 0.2,
+													ease: "back.out(2)",
+													overwrite: true,
+													onComplete: () => {
+														SoundManager.play("notification", 0.1)
+													}
+												}
+	                    );
+                }
+            }
+			});
 			isTyping = true;
 
 			let resolveTypewriter!: () => void;
@@ -64,6 +85,9 @@ export async function playDialogue(
 			while (isTyping) {
 				if (skipRequest) {
 					(timeline as any).revealAll();
+					if ("scale" in bubble) {
+              bubble.scale.set(1);
+          }
 					isTyping = false;
 					resolveTypewriter();
 					break;
@@ -74,15 +98,18 @@ export async function playDialogue(
 
 			await typewriterPromise;
 
-			let elapsed = 0;
-			const step = 16;
-
-			while (elapsed < displayTime && !skipRequest ) {
-				await new Promise(r => setTimeout(r, step));
-				elapsed += step;
+			if (!skipRequest) {
+				let elapsed = 0;
+				const step = 16;
+				while (elapsed < displayTime && !skipRequest ) {
+					await new Promise(r => setTimeout(r, step));
+					elapsed += step;
+				}
+			} else {
+				await new Promise(r => setTimeout(r, 800));
 			}
 
-			await gsap.to(bubble, { alpha: 0, duration: 0.3 }).then(); //TODO
+			await gsap.to(bubble, { alpha: 0, duration: 0.3 });
 
 			timeline.kill();
 			gsap.killTweensOf(bubble);

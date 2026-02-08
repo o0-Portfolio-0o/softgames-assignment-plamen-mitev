@@ -42,7 +42,8 @@ async function loadSounds() {
 		SoundManager.load("pop2", "/assets/sounds/pop2.wav", 0.5),
 		SoundManager.load("pop3", "/assets/sounds/pop3.wav", 0.5),
 		SoundManager.load("pop4", "/assets/sounds/pop4.wav", 0.5),
-		SoundManager.load("pop5", "/assets/sounds/pop5.wav", 0.5)
+		SoundManager.load("pop5", "/assets/sounds/pop5.wav", 0.5),
+		SoundManager.load("notification", "/assets/sounds/notification.wav", 0.5),
 	]);
 }
 
