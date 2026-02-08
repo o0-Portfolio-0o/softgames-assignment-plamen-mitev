@@ -46,6 +46,8 @@ export class PhoenixFlame extends Container {
         const p = this.particles[this.index];
         this.index = (this.index + 1) % this.particles.length;
 
+        gsap.killTweensOf(p);
+
         p.visible = true;
         p.alpha = 1;
 
