@@ -37,10 +37,29 @@ const baseConfig = {
 			anchor: 0.5,
 			yOffset: 2,
 			flyDelayMs: 1000,
+			animations: {
+				flightDuration: 2,
+				arcHeight: 20,
+			},
 			sourceStack: {
 				position: {
 					xOffset: 0.3,
-					yOffset: 2,
+					yOffset: 2
+				},
+				animations: {
+					deck: {
+						lift: {
+							from: {x: 1, y: 1},
+							to: {
+								x: 1.01,
+								y: 0.99,
+								duration: 0.04,
+								ease: "power2.out",
+								yoyo: true,
+								repeat: 1,
+							}
+						},
+					}
 				}
 			},
 			targetStack: {
@@ -49,10 +68,8 @@ const baseConfig = {
 					yOffset: 2,
 				},
 				animations: {
-					flightDuration: 2,
-					arcHeight: 40,
 					flying: {
-						ease: "power2.out"
+						ease: "sine.InOut"
 					},
 					scaling: {
 						scale: {
@@ -63,6 +80,19 @@ const baseConfig = {
 							out: "sine.out",
 							in: "sine.in"
 						}
+					},
+					deck: {
+						hit: {
+							from: {x: 1, y: 1},
+							to: {
+								x: 1.05,
+								y: 0.95,
+								duration: 0.08,
+								ease: "power2.out",
+								yoyo: true,
+								repeat: 1,
+							}
+						},
 					}
 				}
 			}

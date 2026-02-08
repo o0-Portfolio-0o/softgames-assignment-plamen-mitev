@@ -6,7 +6,7 @@ import { MainMenuScene } from "../MainMenu/MainMenuScene";
 import baseConfig from "../../core/config";
 import gsap from "gsap";
 import { Responsive } from "../../core/Responsive";
-
+import { hitEffect } from "../../utils";
 export class AceOfShadowsScene extends BaseScene {
 	private sourceStack!: Container;
 	private targetStack!: Container;
@@ -75,12 +75,15 @@ export class AceOfShadowsScene extends BaseScene {
 		if (this.sourceStack.children.length === 0) return;
 
 		const { yOffset } = baseConfig.games.aceOfShadows.targetStack.position;
-		const { flightDuration, arcHeight, flying, scaling } = baseConfig.games.aceOfShadows.targetStack.animations;
+		const { flying, scaling } = baseConfig.games.aceOfShadows.targetStack.animations;
+		const {flightDuration , arcHeight } = baseConfig.games.aceOfShadows.animations;
 
 		const card = this.sourceStack.children[this.sourceStack.children.length -1] as Sprite;
 
 		const globalStart = card.getGlobalPosition();
 		this.sourceStack.removeChild(card);
+
+		this.deckLaunchEffect();
 
 		const localStart = this.container.toLocal(globalStart);
 		this.container.addChild(card);
@@ -93,12 +96,18 @@ export class AceOfShadowsScene extends BaseScene {
 		const endY = this.targetStack.y - this.targetStack.children.length * yOffset;
 
 		const tl = gsap.timeline({
+			duration:1,
 			onComplete: () => {
 				this.container.removeChild(card);
 				this.targetStack.addChild(card);
 				card.x = 0;
 				card.y = -this.targetStack.children.length * yOffset;
-				card.rotation = endRot;
+				const finalRot = card.rotation;
+				card.rotation = gsap.utils.interpolate(finalRot, endRot, 0.5);
+				hitEffect(
+					this.targetStack,
+					baseConfig.games.aceOfShadows.targetStack.animations.deck.hit
+				);
 			}
 		});
 
@@ -115,6 +124,16 @@ export class AceOfShadowsScene extends BaseScene {
 			}
 		}, 0);
 
+		const stackHeight = this.targetStack.children.length;
+		const rotateDirection = stackHeight > 50 ? -1 : 1;
+
+		tl.to(card, {
+			duration: flightDuration / 1.09,
+			rotation: card.rotation + rotateDirection *(Math.PI * 2),
+			ease: "power1.out"
+		}, 0);
+
+
 		tl.to(card.scale, {
 			duration: flightDuration / 2,
 			x: scaling.scale.to,
@@ -128,5 +147,28 @@ export class AceOfShadowsScene extends BaseScene {
 			y: scaling.scale.reset,
 			ease: scaling.ease.in
 		}, flightDuration / 2);
+	}
+
+	private deckLaunchEffect() {
+		const stack = this.sourceStack;
+		gsap.timeline()
+			.to(stack.scale, {
+				x:0.98,
+				y:1.02,
+				duration: 0.09,
+				ease: "power1.in"
+			})
+			.to(stack.scale, {
+				x: 1.05,
+				y: 0.98,
+				duration: 0.08,
+				ease: "power2.out"
+			})
+			.to(stack.scale, {
+				x: 1,
+				y: 1,
+				duration: 0.12,
+				ease: "elastic.out(1, 0.4)"
+			});
 	}
 }

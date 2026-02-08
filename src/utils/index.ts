@@ -1,5 +1,6 @@
 import { Text, Container } from "pixi.js"
 import { Responsive } from "../core/Responsive";
+import gsap from "gsap";
 
 export function createButton(label: string, y: number, container: Container, style: any, onClick: () => void) {
 	const btn = new Text({ text: label, style });
@@ -11,4 +12,8 @@ export function createButton(label: string, y: number, container: Container, sty
 	btn.on("pointerdown", onClick);
 	container.addChild(btn);
 	return btn;
+}
+
+export function hitEffect(container: Container, {from, to}: {from: gsap.TweenVars; to: gsap.TweenVars;}) {
+	return gsap.fromTo(container.scale, from, to)
 }
