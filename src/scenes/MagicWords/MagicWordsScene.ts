@@ -64,13 +64,17 @@ export class MagicWordsScene extends BaseScene {
 		fontSize = 22
 	): Container {
 		const container = new Container();
+		const maxWidth = this.isMobile ? window.innerWidth - 40 : 500;
+
 		const parts = raw.split(/(\{.*?\})/g);
 
+		let x = 0;
 		let y = 0;
-		const { baseLineOffset, fontSizeMultiplier, widthOffset, style } =
-			baseConfig.games.magicWords.emojiParser;
+		const lineHeight = fontSize * 1.4;
 
 		for (const part of parts) {
+			if (!part.trim()) continue;
+
 			const match = part.match(/^\{(.*)\}$/);
 
 			if (match) {
@@ -79,29 +83,42 @@ export class MagicWordsScene extends BaseScene {
 				if (!texture) continue;
 
 				const emoji = new Sprite(texture);
-				const targetHeight = fontSize * fontSizeMultiplier;
-				const scale = targetHeight / texture.height;
+				const scale = fontSize / texture.height;
 				emoji.scale.set(scale);
 
-				emoji.x = 0;
-				emoji.y = y - baseLineOffset;
+				if (x + emoji.width > maxWidth) {
+					x = 0;
+					y += lineHeight;
+				}
 
+				emoji.x = x;
+				emoji.y = y;
 				container.addChild(emoji);
-				y += emoji.height + widthOffset;
-				continue;
-			}
 
-			if (part.trim().length > 0) {
-				const currentStyles = this.isMobile
-					? { ...style, wordWrap: true, wordWrapWidth: window.innerWidth - 20 }
-					: style;
+				x += emoji.width + 4;
+			} else {
+				const words = part.split(/(\s+)/);
 
-				const text = new Text({ text: part, style: currentStyles });
-				text.x = 0;
-				text.y = y;
+				for (const word of words) {
+					const text = new Text({
+						text: word,
+						style: {
+							fontSize,
+							fill: 0xffffff
+						}
+					});
 
-				container.addChild(text);
-				y += text.height + 4; // spacing
+					if (x + text.width > maxWidth) {
+						x = 0;
+						y += lineHeight;
+					}
+
+					text.x = x;
+					text.y = y;
+					container.addChild(text);
+
+					x += text.width;
+				}
 			}
 		}
 
@@ -223,7 +240,10 @@ export class MagicWordsScene extends BaseScene {
 					if (skipRequest) {
 						(timeline as any).revealAll();
 						if ("scale" in bubble) {
-							bubble.scale.set(1);
+							bubble.scale.set(
+								(bubble as any)._baseScaleX,
+								(bubble as any)._baseScaleY,
+							);
 						}
 						isTyping = false;
 						resolveTypewriter();
@@ -275,6 +295,13 @@ export class MagicWordsScene extends BaseScene {
 
 		const { padding, startOffset, avatarHeight, zIndex, styles } = baseConfig.games.magicWords.dialogBubble;
 
+		if (this.isMobile) {
+			bubble.scale.set(0.8);
+		}
+
+		(bubble as any)._baseScaleX = bubble.scale.x;
+		(bubble as any)._baseScaleY = bubble.scale.y;
+
 		const avatarDef = avatars.find(a => a.name === entry.name);
 		const avatarTexture = avatarDef ? avatarTextures.get(avatarDef.name) : undefined;
 
@@ -325,7 +352,7 @@ export class MagicWordsScene extends BaseScene {
 		bubble.addChild(bg);
 		bubble.alpha = 0;
 
-		const timeline = gsapTypewriter(richText, 0.3);
+		const timeline = gsapTypewriter(richText, 0.02);
 		if (this.isMobile) {
 			bubble.scale.set(0.8)
 		}
