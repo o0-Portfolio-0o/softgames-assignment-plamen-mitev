@@ -30,7 +30,7 @@ export interface ApiData {
 }
 export class MagicWordsScene extends BaseScene {
 	private currentBubble!: Container;
-	private isMobile = window.innerWidth <= 600;
+	private isMobile = window.innerWidth <= baseConfig.games.magicWords.config.mobileWidthThreshold;
 
 	async init() {
 		const { style, label, position: { y } } = baseConfig.ui.backButton;
@@ -50,7 +50,7 @@ export class MagicWordsScene extends BaseScene {
 
 		createButton(
 			label,
-			window.innerWidth - 100,
+			window.innerWidth - baseConfig.games.magicWords.config.backButtonOffsetX,
 			y,
 			this.container,
 			style,
@@ -64,13 +64,14 @@ export class MagicWordsScene extends BaseScene {
 		fontSize = 22
 	): Container {
 		const container = new Container();
-		const maxWidth = this.isMobile ? window.innerWidth - 40 : 500;
+		const config = baseConfig.games.magicWords.config;
+		const maxWidth = this.isMobile ? window.innerWidth - config.mobileInnerPadding : config.maxWidthDesktop;
 
 		const parts = raw.split(/(\{.*?\})/g);
 
 		let x = 0;
 		let y = 0;
-		const lineHeight = fontSize * 1.4;
+		const lineHeight = fontSize * config.emojiLineHeightMultiplier;
 
 		for (const part of parts) {
 			if (!part.trim()) continue;
@@ -93,9 +94,9 @@ export class MagicWordsScene extends BaseScene {
 
 				emoji.x = x;
 				emoji.y = y;
-				container.addChild(emoji);
+					container.addChild(emoji);
 
-				x += emoji.width + 4;
+					x += emoji.width + config.emojiGap;
 			} else {
 				const words = part.split(/(\s+)/);
 
@@ -104,7 +105,7 @@ export class MagicWordsScene extends BaseScene {
 						text: word,
 						style: {
 							fontSize,
-							fill: 0xffffff
+							fill: baseConfig.games.magicWords.emojiParser.style.fill
 						}
 					});
 
@@ -176,8 +177,8 @@ export class MagicWordsScene extends BaseScene {
 		};
 
 		window.addEventListener("pointerdown", onClick);
-		const { offset } = baseConfig.games.magicWords.dialogManager;
-		const { displayTime } = baseConfig.games.magicWords.dialogManager;
+		const { offset, displayTime } = baseConfig.games.magicWords.dialogManager;
+		const config = baseConfig.games.magicWords.config;
 
 		try {
 			for (const entry of entries) {
@@ -192,7 +193,7 @@ export class MagicWordsScene extends BaseScene {
 				);
 				this.currentBubble = bubble;
 				const bubblePosXBasedOnSide = side === "left" ? offset : window.innerWidth - bubble.width - offset;
-				const bubblePosYBasedOnSide = side === "left" ? 100 : window.innerHeight - 200;
+				const bubblePosYBasedOnSide = side === "left" ? config.bubbleTopY || 100 : window.innerHeight - (config.bubbleBottomYOffset || 200);
 				const bubblePosX = this.isMobile ? window.innerWidth / 2 - bubble.width / 2 : bubblePosXBasedOnSide;
 				const bubblePosY = this.isMobile ? bubblePosYBasedOnSide : window.innerHeight - bubble.height - offset;
 				bubble.x = bubblePosX;
@@ -201,22 +202,22 @@ export class MagicWordsScene extends BaseScene {
 				container.addChild(bubble);
 
 				await gsap.to(bubble, {
-					alpha: 1, duration: 0.3,
+					alpha: 1, duration: config.bubble.fadeDuration,
 					onStart: () => {
 						if ("scale" in bubble) {
 							const baseX = bubble.scale.x;
 							const baseY = bubble.scale.y;
 							gsap.fromTo(
 								bubble.scale,
-								{ x: baseX * 0.5, y: baseY * 0.5 },
+								{ x: baseX * config.bubble.pop.scaleFactor, y: baseY * config.bubble.pop.scaleFactor },
 								{
 									x: baseX,
 									y: baseY,
-									duration: 0.2,
-									ease: "back.out(2)",
+									duration: config.bubble.pop.duration,
+									ease: config.bubble.pop.ease,
 									overwrite: true,
 									onComplete: () => {
-										SoundManager.play("notification", 0.1)
+										SoundManager.play("notification", config.sound.notificationVolume)
 									}
 								}
 							);
@@ -226,15 +227,15 @@ export class MagicWordsScene extends BaseScene {
 				isTyping = true;
 
 				let resolveTypewriter!: () => void;
-				const typewriterPromise = new Promise<void>(resolve => {
-					resolveTypewriter = resolve;
-					timeline.eventCallback("onComplete", () => {
-						isTyping = false;
-						resolve();
-					});
+					const typewriterPromise = new Promise<void>(resolve => {
+						resolveTypewriter = resolve;
+						timeline.eventCallback("onComplete", () => {
+							isTyping = false;
+							resolve();
+						});
 
-					timeline.play();
-				});
+						timeline.play();
+					});
 
 				while (isTyping) {
 					if (skipRequest) {
@@ -250,23 +251,23 @@ export class MagicWordsScene extends BaseScene {
 						break;
 					}
 
-					await new Promise(r => setTimeout(r, 16));
+						await new Promise(r => setTimeout(r, config.timing.frameStepMs));
 				}
 
 				await typewriterPromise;
 
 				if (!skipRequest) {
 					let elapsed = 0;
-					const step = 16;
+					const step = config.timing.frameStepMs;
 					while (elapsed < displayTime && !skipRequest) {
 						await new Promise(r => setTimeout(r, step));
 						elapsed += step;
 					}
 				} else {
-					await new Promise(r => setTimeout(r, 800));
+						await new Promise(r => setTimeout(r, config.timing.skipWaitMs));
 				}
 
-				await gsap.to(bubble, { alpha: 0, duration: 0.3 });
+				await gsap.to(bubble, { alpha: 0, duration: config.bubble.fadeDuration });
 
 				timeline.kill();
 				gsap.killTweensOf(bubble);
@@ -294,9 +295,10 @@ export class MagicWordsScene extends BaseScene {
 		bubble.sortableChildren = true;
 
 		const { padding, startOffset, avatarHeight, zIndex, styles } = baseConfig.games.magicWords.dialogBubble;
+		const config = baseConfig.games.magicWords.config;
 
 		if (this.isMobile) {
-			bubble.scale.set(0.8);
+			bubble.scale.set(config.bubble.mobileScale || 0.8);
 		}
 
 		(bubble as any)._baseScaleX = bubble.scale.x;
@@ -345,22 +347,22 @@ export class MagicWordsScene extends BaseScene {
 				padding / 2,
 				totalWidth,
 				totalHeight,
-				14
-			).fill({ color: 0x00bbee });
+				config.bubble.cornerRadius
+			).fill({ color: config.bubble.color });
 
 		bg.zIndex = zIndex.bg;
 		bubble.addChild(bg);
 		bubble.alpha = 0;
 
-		const timeline = gsapTypewriter(richText, 0.02);
+		const timeline = gsapTypewriter(richText, config.timing.typewriterSpeed);
 		if (this.isMobile) {
-			bubble.scale.set(0.8)
+			bubble.scale.set(config.bubble.mobileScale || 0.8)
 		}
 		return { bubble, timeline, richText };
 	}
 
 	onResize = () => {
-		this.isMobile = window.innerWidth <= 600;
+		this.isMobile = window.innerWidth <= baseConfig.games.magicWords.config.mobileWidthThreshold;
 	}
 
 	update(): void { }

@@ -103,6 +103,35 @@ const baseConfig = {
 			blendMode: "color-burn"
 		},
 		magicWords: {
+			config: {
+				bubbleTopY: 100,
+				bubbleBottomYOffset: 200,
+				backButtonOffsetX: 100,
+				mobileWidthThreshold: 600,
+				maxWidthDesktop: 500,
+				mobileInnerPadding: 40,
+				emojiGap: 4,
+				emojiLineHeightMultiplier: 1.4,
+				bubble: {
+					mobileScale: 0.8,
+					cornerRadius: 14,
+					color: 0x00bbee,
+					fadeDuration: 0.3,
+					pop: {
+						scaleFactor: 0.5,
+						duration: 0.2,
+						ease: "back.out(2)",
+					},
+				},
+				sound: {
+					notificationVolume: 0.1
+				},
+				timing: {
+					typewriterSpeed: 0.02,
+					frameStepMs: 16,
+					skipWaitMs: 800
+				}
+			},
 			emojiParser: {
 				baseLineOffset: 4,
 				fontSizeMultiplier: 1.1,
@@ -110,8 +139,6 @@ const baseConfig = {
 				style: {
 					fontFamily: 'monospace',
 					fontSize: 18,
-					// wordWrap: true,
-					// wordWrapWidth: 300,
 					fill: 0xffffff
 				}
 			},
