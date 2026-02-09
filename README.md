@@ -20,6 +20,19 @@ This project is a Pixi.js game application for the Softgames interview assignmen
 ## Notes
 - Game configuration is in `src/core/config.ts`.
 
+## Future Improvements
+There were a few enhancements I wanted to implement but couldn’t finish within the given time. I’m listing them here as potential improvements for future iterations:
+
+- Show the back button immediately instead of waiting for the bubble animation to finish
+- Fix an animation issue where bubble transitions bleed into other scenes
+- Add support for multiple font styles
+- Refine and polish the overall animations
+- Introduce different background themes for each task
+- Add hover effects to buttons
+- Add an option to mute sound effects
+- Add background music with volume control
+
+
 ## Game Developer Assignment
 1. “Ace of Shadows”
 Create 144 sprites (NOT graphic objects) that are stacked on top of each other like
@@ -47,6 +60,6 @@ Technical requirements:
 
 ✅ Display the fps in the top left corner.
 
-Run the application in full screen.
+✅ Run the application in full screen.
 
 
