@@ -2,6 +2,8 @@
 
 This project is a Pixi.js game application for the Softgames interview assignment.
 
+Link: https://mellow-dodol-b26fe5.netlify.app/
+
 ## Structure
 - `src/` — Main source code
 - `assets/` — Game assets (images, sounds)
@@ -31,6 +33,7 @@ There were a few enhancements I wanted to implement but couldn’t finish within
 - Add hover effects to buttons
 - Add an option to mute sound effects
 - Add background music with volume control
+- Align and style menu buttons
 
 
 ## Game Developer Assignment
@@ -63,3 +66,13 @@ Technical requirements:
 ✅ Run the application in full screen.
 
 
+## Sounds assets
+pop effects 
+Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=87152">freesound_community</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=87152">Pixabay</a>
+Sound Effect by [freesound_community](https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=87152) from [Pixabay](https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=87152)
+
+notification effect
+Sound Effect by [quiandrea96](https://pixabay.com/users/quiandrea96-20425108/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=457196) from [Pixabay](https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=457196)
+
+fire sound
+Sound Effect by [DRAGON-STUDIO](https://pixabay.com/users/dragon-studio-38165424/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=405444) from [Pixabay](https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=405444)
