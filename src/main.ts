@@ -50,3 +50,9 @@ async function loadSounds() {
 }
 
 start();
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'f' || e.key === 'F') {
+    document.body.requestFullscreen();
+  }
+});

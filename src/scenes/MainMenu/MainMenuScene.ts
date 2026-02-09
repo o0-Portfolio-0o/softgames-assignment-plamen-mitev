@@ -18,6 +18,7 @@ export class MainMenuScene extends BaseScene {
 	private btnAce!: Container;
 	private btnWords!: Container;
 	private btnPhoenix!: Container;
+	private fullScreenText!: Text;
 	init(): void {
 		const { ui } = baseConfig;
 
@@ -32,6 +33,13 @@ export class MainMenuScene extends BaseScene {
 		this.title.y = ui.title.position.y;
 		this.container.addChild(this.title);
 		const buttonXPos = window.innerWidth / 2 - 100;
+
+		this.fullScreenText = new Text({text: 'Press F to enter fullscreen mode', style: {fill: 0xffffff, fontSize: 16 }});
+
+		this.fullScreenText.y = window.innerHeight - 30;
+		this.fullScreenText.x = 10;
+		this.container.addChild(this.fullScreenText);
+
 		this.btnAce = createButton(
 			SCENES.ACE_OF_SHADOWS,
 			buttonXPos,
@@ -77,6 +85,7 @@ export class MainMenuScene extends BaseScene {
 			this.btnAce.x = window.innerWidth / 2 - this.btnAce.width / 2;
 			this.btnWords.x = window.innerWidth / 2 - this.btnWords.width / 2;
 			this.btnPhoenix.x = window.innerWidth / 2 - this.btnPhoenix.width / 2;
+			this.fullScreenText.y = window.innerHeight - 30;
 		}
 
 	update(): void {}
