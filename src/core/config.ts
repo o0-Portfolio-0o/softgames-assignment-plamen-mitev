@@ -109,7 +109,9 @@ const baseConfig = {
 				widthOffset: 4,
 				style: {
 					fontFamily: 'monospace',
-					fontSize: 22,
+					fontSize: 18,
+					// wordWrap: true,
+					// wordWrapWidth: 300,
 					fill: 0xffffff
 				}
 			},
@@ -137,12 +139,7 @@ const baseConfig = {
 			},
 			dialogManager: {
 				displayTime: 1500,
-				positions: {
-					leftX: 40,
-					offset: {
-						y: 60,
-					},
-				}
+				offset: 60
 			}
 		}
 	}
