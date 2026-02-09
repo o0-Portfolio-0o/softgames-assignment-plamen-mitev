@@ -4,7 +4,7 @@ import { SceneManager } from "../../core/SceneManager";
 import { AceOfShadowsScene } from "../AceOfShadows/AceOfShadowsScene";
 import { MagicWordsScene } from "../MagicWords/MagicWordsScene";
 import { PhoenixFlameScene } from "../PhoenixFlame/PhoenixFlameScene";
-import { createButton } from "../../utils";
+import { createButton, hitEffect } from "../../utils";
 import baseConfig from "../../core/config";
 
 export const SCENES = {
@@ -38,7 +38,11 @@ export class MainMenuScene extends BaseScene {
 			200,
 			this.container,
 			ui.backButton.style,
-			() => SceneManager.changeScene(new AceOfShadowsScene())
+			async () => {
+				hitEffect(this.btnAce, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
+				await new Promise(r => setTimeout(r, 200));
+				SceneManager.changeScene(new AceOfShadowsScene());
+			}
 		);
 
 		this.btnWords = createButton(
@@ -47,7 +51,11 @@ export class MainMenuScene extends BaseScene {
 			300,
 			this.container,
 			ui.backButton.style,
-			() => SceneManager.changeScene(new MagicWordsScene())
+			async () => {
+				hitEffect(this.btnWords, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
+				await new Promise(r => setTimeout(r, 200));
+				SceneManager.changeScene(new MagicWordsScene())
+			}
 		);
 
 		this.btnPhoenix = createButton(
@@ -56,7 +64,11 @@ export class MainMenuScene extends BaseScene {
 			400,
 			this.container,
 			ui.backButton.style,
-			() => SceneManager.changeScene(new PhoenixFlameScene())
+			async () => {
+				hitEffect(this.btnPhoenix, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
+				await new Promise(r => setTimeout(r, 200));
+				SceneManager.changeScene(new PhoenixFlameScene())
+			}
 		);
 	}
 

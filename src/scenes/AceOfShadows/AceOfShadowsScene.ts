@@ -24,7 +24,11 @@ export class AceOfShadowsScene extends BaseScene {
 			y,
 			this.container,
 			style,
-			() => SceneManager.changeScene(new MainMenuScene())
+			async () => {
+				hitEffect(this.backBtn, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
+				await new Promise(r => setTimeout(r, 200));
+				SceneManager.changeScene(new MainMenuScene());
+			}
 		);
 	}
 

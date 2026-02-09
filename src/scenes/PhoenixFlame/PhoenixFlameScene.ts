@@ -5,7 +5,7 @@ import { MainMenuScene } from "../MainMenu/MainMenuScene";
 import { createButton } from "../../utils";
 import baseConfig from "../../core/config";
 import { PhoenixFlame } from "./PhoenixFlame";
-
+import { hitEffect } from "../../utils";
 export class PhoenixFlameScene extends BaseScene {
     private flame!: PhoenixFlame;
     private backBtn!: Container;
@@ -24,7 +24,11 @@ export class PhoenixFlameScene extends BaseScene {
             y,
             this.container,
             style,
-            () => SceneManager.changeScene(new MainMenuScene())
+			async () => {
+				hitEffect(this.backBtn, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
+				await new Promise(r => setTimeout(r, 200));
+				SceneManager.changeScene(new MainMenuScene());
+			}
         );
     }
 

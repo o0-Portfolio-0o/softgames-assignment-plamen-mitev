@@ -7,6 +7,7 @@ import { SoundManager } from "../../core/SoundManager";
 import baseConfig from "../../core/config";
 import { gsapTypewriter } from "./Typewriter";
 import gsap from "gsap";
+import { hitEffect } from "../../utils";
 export interface DialogEntry {
 	name: string;
 	text: string;
@@ -31,6 +32,7 @@ export interface ApiData {
 export class MagicWordsScene extends BaseScene {
 	private currentBubble!: Container;
 	private isMobile = window.innerWidth <= baseConfig.games.magicWords.config.mobileWidthThreshold;
+	private backBtn!: Container;
 
 	async init() {
 		const { style, label, position: { y } } = baseConfig.ui.backButton;
@@ -48,13 +50,17 @@ export class MagicWordsScene extends BaseScene {
 			window.innerHeight
 		);
 
-		createButton(
+		this.backBtn = createButton(
 			label,
 			window.innerWidth - baseConfig.games.magicWords.config.backButtonOffsetX,
 			y,
 			this.container,
 			style,
-			() => SceneManager.changeScene(new MainMenuScene())
+			async () => {
+				hitEffect(this.backBtn, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
+				await new Promise(r => setTimeout(r, 200));
+				SceneManager.changeScene(new MainMenuScene());
+			}
 		);
 	}
 
