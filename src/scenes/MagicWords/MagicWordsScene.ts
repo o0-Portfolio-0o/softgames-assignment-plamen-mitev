@@ -8,6 +8,7 @@ import baseConfig from "../../core/config";
 import { gsapTypewriter } from "./Typewriter";
 import gsap from "gsap";
 import { hitEffect } from "../../utils";
+import { SoundKeys } from "../../core/assetsMap";
 export interface DialogEntry {
 	name: string;
 	text: string;
@@ -223,7 +224,7 @@ export class MagicWordsScene extends BaseScene {
 									ease: config.bubble.pop.ease,
 									overwrite: true,
 									onComplete: () => {
-										SoundManager.play("notification", config.sound.notificationVolume)
+										SoundManager.play(("notification" as SoundKeys), config.sound.notificationVolume)
 									}
 								}
 							);

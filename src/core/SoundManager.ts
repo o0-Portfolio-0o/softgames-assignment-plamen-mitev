@@ -1,15 +1,10 @@
 import { Howl } from 'howler';
-
+import { assetMap, SoundKeys } from './assetsMap';
 export class SoundManager {
-	private static sounds = new Map<string, Howl>();
+	public static sounds: Record<SoundKeys, Howl> = {} as Record<SoundKeys, Howl>;
 
-	static load(name: string, src: string, volume = 1) {
-		const sound = new Howl({ src: [src], volume });
-		this.sounds.set(name, sound);
-	}
-
-	static play(name: string, volume: number) {
-		const sound = this.sounds.get(name);
+	static play(name: SoundKeys, volume: number) {
+		const sound = this.sounds[name];
 		if (!sound) return;
 
 		if (volume !== undefined) {
@@ -17,5 +12,19 @@ export class SoundManager {
 		}
 
 		sound.play();
+	}
+
+	static preload(volume = 0.5):Promise<void[]> {
+		const promises = Object.entries(assetMap.sounds).map(([key, src]) => {
+			return new Promise<void>((resolve, reject) => {
+				const sound = new Howl({src,
+					volume,
+					onload: () => resolve(),
+					onloaderror: (id, error) => reject(`Error loading ${key}: ${error}`),
+				});
+				this.sounds[key as SoundKeys] = sound;
+			});
+		});
+		return Promise.all(promises);
 	}
 }

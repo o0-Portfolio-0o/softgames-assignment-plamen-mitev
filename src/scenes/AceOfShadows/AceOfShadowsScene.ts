@@ -7,6 +7,7 @@ import baseConfig from "../../core/config";
 import gsap from "gsap";
 import { hitEffect } from "../../utils";
 import { SoundManager } from "../../core/SoundManager";
+import { assetMap, SoundKeys } from "../../core/assetsMap";
 export class AceOfShadowsScene extends BaseScene {
 	private sourceStack!: Container;
 	private targetStack!: Container;
@@ -66,7 +67,7 @@ export class AceOfShadowsScene extends BaseScene {
 	private createCards() {
 		const { totalCards, anchor, yOffset } = baseConfig.games.aceOfShadows;
 
-		const cardTexture = Texture.from('/assets/card.png');
+		const cardTexture = Texture.from(assetMap.images.card);
 		for (let i = 0; i < totalCards; i++) {
 			const card = new Sprite(cardTexture);
 			card.anchor.set(anchor);
@@ -126,8 +127,9 @@ export class AceOfShadowsScene extends BaseScene {
 					this.targetStack,
 					baseConfig.games.aceOfShadows.targetStack.animations.deck.hit
 				);
+
 				const popIndex = Math.floor(Math.random() * 6);
-				SoundManager.play(`pop${popIndex}`, 0.1);
+				SoundManager.play((	`POP${popIndex}_SOUND` as SoundKeys), 0.1);
 			}
 		});
 

@@ -6,12 +6,13 @@ import { createButton } from "../../utils";
 import baseConfig from "../../core/config";
 import { PhoenixFlame } from "./PhoenixFlame";
 import { hitEffect } from "../../utils";
+import { assetMap } from "../../core/assetsMap";
 export class PhoenixFlameScene extends BaseScene {
     private flame!: PhoenixFlame;
     private backBtn!: Container;
 
     init(): void {
-        const flameTexture = Texture.from("/assets/flame.png");
+        const flameTexture = Texture.from(assetMap.images.flame);
         window.addEventListener('resize', this.onResize);
         const { label, position: { y }, style } = baseConfig.ui.backButton;
 
