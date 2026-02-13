@@ -6,13 +6,13 @@ export const assetMap = {
 		backButton: "/assets/images/backButton.png",
 	},
 	sounds: {
-		POP0_SOUND: "/assets/sounds/pop0.wav",
-		POP1_SOUND: "/assets/sounds/pop1.wav",
-		POP2_SOUND: "/assets/sounds/pop2.wav",
-		POP3_SOUND: "/assets/sounds/pop3.wav",
-		POP4_SOUND: "/assets/sounds/pop4.wav",
-		POP5_SOUND: "/assets/sounds/pop5.wav",
-		NOTIFICATION_SOUND: "/assets/sounds/notification.wav",
+		pop0: "/assets/sounds/pop0.wav",
+		pop1: "/assets/sounds/pop1.wav",
+		pop2: "/assets/sounds/pop2.wav",
+		pop3: "/assets/sounds/pop3.wav",
+		pop4: "/assets/sounds/pop4.wav",
+		pop5: "/assets/sounds/pop5.wav",
+		notification: "/assets/sounds/notification.wav",
 	}
 } as const;
 

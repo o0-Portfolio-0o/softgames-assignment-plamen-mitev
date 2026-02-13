@@ -137,7 +137,7 @@ export class AceOfShadowsScene extends BaseScene {
 				);
 
 				const popIndex = Math.floor(Math.random() * 6);
-				SoundManager.play((	`POP${popIndex}_SOUND` as SoundKeys), 0.1);
+				SoundManager.play((	`pop${popIndex}` as SoundKeys), 0.1);
 			}
 		});
 
