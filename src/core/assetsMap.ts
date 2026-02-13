@@ -2,6 +2,8 @@ export const assetMap = {
 	images: {
 		card: "/assets/images/card.png",
 		flame: "/assets/images/flame.png",
+		button: "/assets/images/button.png",
+		backButton: "/assets/images/backButton.png",
 	},
 	sounds: {
 		POP0_SOUND: "/assets/sounds/pop0.wav",

@@ -8,7 +8,7 @@ const baseConfig = {
 			},
 			style: {
 				fill: 0xffffff,
-				fontSize: 26,
+				fontSize: 36,
 			}
 		},
 		backButton: {

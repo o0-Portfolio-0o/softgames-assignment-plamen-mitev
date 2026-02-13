@@ -8,29 +8,37 @@ import gsap from "gsap";
 import { hitEffect } from "../../utils";
 import { SoundManager } from "../../core/SoundManager";
 import { assetMap, SoundKeys } from "../../core/assetsMap";
+import { Button } from "../../core/Button";
+
 export class AceOfShadowsScene extends BaseScene {
 	private sourceStack!: Container;
 	private targetStack!: Container;
 	private spawnAccumulatorMs = 0;
-	private backBtn!: Container;
+	private backButton!: Button;
 
 	init(): void {
 		const { style, label, position: { y } } = baseConfig.ui.backButton;
 		window.addEventListener('resize', this.onResize);
 		this.createStack();
 		this.createCards();
-		this.backBtn = createButton(
-			label,
-			window.innerWidth - 100,
-			y,
-			this.container,
-			style,
-			async () => {
-				hitEffect(this.backBtn, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
+
+		const buttonTexture = Texture.from(assetMap.images.backButton);
+
+		this.backButton = new Button({
+			label: "👈 BACK",
+			texture: buttonTexture,
+			textStyle: {fill: '#ffffff', fontFamily: 'monospace', fontSize: 16},
+			parentContainer: this.container,
+			position: {
+				x: window.innerWidth - 90,
+				y: 40
+			},
+			onClick: async () => {
+				hitEffect(this.backButton, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
 				await new Promise(r => setTimeout(r, 200));
 				SceneManager.changeScene(new MainMenuScene());
 			}
-		);
+		});
 	}
 
 	update(deltaMs: number): void {
@@ -195,6 +203,6 @@ export class AceOfShadowsScene extends BaseScene {
 		this.targetStack.x = window.innerWidth - this.targetStack.width / 2;
 		this.sourceStack.y = window.innerHeight - 100;
 		this.targetStack.y = window.innerHeight - 100;
-		this.backBtn.x = window.innerWidth - 100;
+		this.backButton.x = window.innerWidth - 100;
 	}
 }

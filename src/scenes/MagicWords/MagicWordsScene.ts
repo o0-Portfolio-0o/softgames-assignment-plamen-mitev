@@ -1,5 +1,4 @@
 import { BaseScene } from "../../core/BaseScene";
-import { createButton } from "../../utils";
 import { MainMenuScene } from "../MainMenu/MainMenuScene";
 import { SceneManager } from "../../core/SceneManager";
 import { Graphics, Container, Texture, Sprite, Text, Application, wordWrap } from "pixi.js";
@@ -9,6 +8,8 @@ import { gsapTypewriter } from "./Typewriter";
 import gsap from "gsap";
 import { hitEffect } from "../../utils";
 import { SoundKeys } from "../../core/assetsMap";
+import { Button } from "../../core/Button";
+import { assetMap } from "../../core/assetsMap";
 export interface DialogEntry {
 	name: string;
 	text: string;
@@ -33,7 +34,7 @@ export interface ApiData {
 export class MagicWordsScene extends BaseScene {
 	private currentBubble!: Container;
 	private isMobile = window.innerWidth <= baseConfig.games.magicWords.config.mobileWidthThreshold;
-	private backBtn!: Container;
+	private backButton!: Button;
 
 	async init() {
 		const { style, label, position: { y } } = baseConfig.ui.backButton;
@@ -51,18 +52,23 @@ export class MagicWordsScene extends BaseScene {
 			window.innerHeight
 		);
 
-		this.backBtn = createButton(
-			label,
-			window.innerWidth - baseConfig.games.magicWords.config.backButtonOffsetX,
-			y,
-			this.container,
-			style,
-			async () => {
-				hitEffect(this.backBtn, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
+		const buttonTexture = Texture.from(assetMap.images.backButton);
+
+		this.backButton = new Button({
+			label: "👈 BACK",
+			texture: buttonTexture,
+			textStyle: {fill: '#ffffff', fontFamily: 'monospace', fontSize: 16},
+			parentContainer: this.container,
+			position: {
+				x: window.innerWidth - 90,
+				y: 40
+			},
+			onClick: async () => {
+				hitEffect(this.backButton, baseConfig.games.aceOfShadows.targetStack.animations.deck.hit);
 				await new Promise(r => setTimeout(r, 200));
 				SceneManager.changeScene(new MainMenuScene());
 			}
-		);
+		});
 	}
 
 	private emojiParser(
@@ -370,6 +376,7 @@ export class MagicWordsScene extends BaseScene {
 
 	onResize = () => {
 		this.isMobile = window.innerWidth <= baseConfig.games.magicWords.config.mobileWidthThreshold;
+		this.backButton.x = window.innerWidth - 100;
 	}
 
 	update(): void { }
